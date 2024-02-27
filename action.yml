@@ -1,0 +1,58 @@
+name: Releases for a Project
+description: |
+  Return the known releases for a project on GitHub.
+author: Emmanuel Frecon <efrecon+github@gmail.com>
+branding:
+  icon: activity
+  color: green
+
+inputs:
+  project:
+    description: 'The project to get the releases for.'
+    required: false
+    default: ${{ github.repository }}
+  regex:
+    description: |
+      The regular expression that releases at the project should match.
+    required: false
+    default: 'v?[0-9]+\.[0-9]+\.[0-9]+'
+  minimum:
+    description: |
+      The minium release version of the versions to return.
+    required: false
+  field:
+    description: |
+      The JSON in the response from the GitHub API to extract the release name
+      from.
+    required: false
+    default: 'tag_name'
+  separator:
+    description: |
+      The separator to use when returning the list of releases.
+    required: false
+    default: ' '
+
+outputs:
+  latest:
+    description: |
+      The latest release that matches the regular expression.
+    value: ${{ steps.releases.outputs.latest }}
+  releases:
+    description: |
+      The list of releases that match the regular expression.
+    value: ${{ steps.releases.outputs.releases }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get the releases
+      id: releases
+      shell: bash
+      env:
+        RELEASES_PROJECT: ${{ inputs.project }}
+        RELEASES_REGEX: ${{ inputs.regex }}
+        RELEASES_MINVER: ${{ inputs.minimum }}
+        RELEASES_FIELD: ${{ inputs.field }}
+        RELEASES_SEPARATOR: ${{ inputs.separator }}
+      run: |
+        "${{ github.action_path }}/releases.sh"

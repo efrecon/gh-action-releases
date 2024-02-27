@@ -1,0 +1,26 @@
+name: test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Test
+        id: test
+        uses: ./
+        with:
+          project: cloudflare/cloudflared
+          minimum: 2023.0.0
+      - name: Print versions
+        run: |
+          printf "Latest: %s\n" "${{ steps.test.outputs.latest }}"
+          printf "Versions: %s\n" "${{ steps.test.outputs.releases }}

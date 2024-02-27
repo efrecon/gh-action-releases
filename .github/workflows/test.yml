@@ -23,4 +23,4 @@ jobs:
       - name: Print versions
         run: |
           printf "Latest: %s\n" "${{ steps.test.outputs.latest }}"
-          printf "Versions: %s\n" "${{ steps.test.outputs.releases }}
+          printf "Versions: %s\n" "${{ steps.test.outputs.releases }}"

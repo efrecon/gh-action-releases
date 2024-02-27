@@ -20,12 +20,6 @@ inputs:
     description: |
       The minium release version of the versions to return.
     required: false
-  field:
-    description: |
-      The JSON in the response from the GitHub API to extract the release name
-      from.
-    required: false
-    default: 'tag_name'
   separator:
     description: |
       The separator to use when returning the list of releases.
@@ -52,7 +46,6 @@ runs:
         RELEASES_PROJECT: ${{ inputs.project }}
         RELEASES_REGEX: ${{ inputs.regex }}
         RELEASES_MINVER: ${{ inputs.minimum }}
-        RELEASES_FIELD: ${{ inputs.field }}
         RELEASES_SEPARATOR: ${{ inputs.separator }}
       run: |
         "${{ github.action_path }}/releases.sh"

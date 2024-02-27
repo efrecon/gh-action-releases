@@ -38,15 +38,15 @@ ROOTDIR=$( cd -P -- "$(dirname -- "$(command -v -- "$(abspath "$0")")")" && pwd 
 
 : "${RELEASES_REGEX:="^v?[0-9]+\\.[0-9]+\\.[0-9]+"}"
 
-: "${RELEASES_FIELD:="tag_name"}"
-
 : "${RELEASES_SEPARATOR:=","}"
+
+: "${GITHUB_OUTPUT:="/dev/stdout"}"
 
 releases() {
   # Ask GH for the list of releases matching the tag pattern, then fool the sort
   # -V option to properly understand semantic versioning. Arrange for latest
   # version to be at the top. See: https://stackoverflow.com/a/40391207
-  github_releases -r "$RELEASES_REGEX" -f "$RELEASES_FIELD" -- "$1" |
+  github_releases -r "$RELEASES_REGEX" -- "$1" |
     sed '/-/!{s/$/_/}' |
     sort -Vr |
     sed 's/_$//'
